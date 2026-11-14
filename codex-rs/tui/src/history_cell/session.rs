@@ -3,7 +3,6 @@
 use super::*;
 use crate::line_truncation::line_width;
 use crate::line_truncation::truncate_line_with_ellipsis_if_overflow;
-use crate::style::accent_color;
 use crate::width::display_width;
 
 /// Render `lines` inside a border whose inner width is at least `inner_width`.
@@ -42,11 +41,54 @@ pub(crate) fn with_border_with_inner_width(
 
 /// Brand title shared by the session header and the status card; each owns its own indentation.
 pub(crate) fn codex_title(version: &str) -> Vec<Span<'static>> {
-    vec![
-        ">_ ".fg(accent_color()),
-        "OpenAI Codex".bold(),
-        format!(" (v{version})").dim(),
-    ]
+    let mut spans = vec!["▚▞ ".fg(redpill_rgb(crate::style::REDPILL_GREEN))];
+    spans.extend(redpill_gradient("redpill"));
+    spans.push(format!(" (v{version})").dim());
+    spans.push(
+        "  LOCAL INFERENCE // 127.0.0.1 // llama.cpp ⟨Metal⟩"
+            .fg(redpill_rgb(crate::style::REDPILL_GREEN)),
+    );
+    spans
+}
+
+/// Large gradient banner mirroring the original redpill app header.
+const REDPILL_ART: [&str; 6] = [
+    "██████╗ ███████╗██████╗ ██████╗ ██╗██╗     ██╗",
+    "██╔══██╗██╔════╝██╔══██╗██╔══██╗██║██║     ██║",
+    "██████╔╝█████╗  ██║  ██║██████╔╝██║██║     ██║",
+    "██╔══██╗██╔══╝  ██║  ██║██╔═══╝ ██║██║     ██║",
+    "██║  ██║███████╗██████╔╝██║     ██║███████╗███████╗",
+    "╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝     ╚═╝╚══════╝╚══════╝",
+];
+
+fn redpill_rgb(rgb: (u8, u8, u8)) -> ratatui::style::Color {
+    crate::terminal_palette::best_color(rgb)
+}
+
+/// Cyan to magenta gradient across `text`, like redpill's theme.blend().
+fn redpill_gradient(text: &str) -> Vec<Span<'static>> {
+    let (c1, c2) = (crate::style::REDPILL_CYAN, crate::style::REDPILL_MAGENTA);
+    let n = text.chars().count().max(2) - 1;
+    let lerp = |a: u8, b: u8, t: f32| (f32::from(a) + (f32::from(b) - f32::from(a)) * t) as u8;
+    text.chars()
+        .enumerate()
+        .map(|(i, ch)| {
+            let t = i as f32 / n as f32;
+            let rgb = (lerp(c1.0, c2.0, t), lerp(c1.1, c2.1, t), lerp(c1.2, c2.2, t));
+            Span::from(ch.to_string()).fg(redpill_rgb(rgb)).bold()
+        })
+        .collect()
+}
+
+fn redpill_banner_lines() -> Vec<Line<'static>> {
+    REDPILL_ART
+        .iter()
+        .map(|row| {
+            let mut spans = vec![Span::from("  ")];
+            spans.extend(redpill_gradient(row));
+            Line::from(spans)
+        })
+        .collect()
 }
 
 #[derive(Debug)]
@@ -223,7 +265,7 @@ pub(crate) fn new_session_info(
             Line::from(vec![
                 "  ".into(),
                 "/init".into(),
-                " - create an AGENTS.md file with instructions for Codex".dim(),
+                " - create an AGENTS.md file with instructions for redpill".dim(),
             ]),
             Line::from(vec![
                 "  ".into(),
@@ -233,7 +275,7 @@ pub(crate) fn new_session_info(
             Line::from(vec![
                 "  ".into(),
                 "/permissions".into(),
-                " - choose what Codex is allowed to do".dim(),
+                " - choose what redpill is allowed to do".dim(),
             ]),
             Line::from(vec![
                 "  ".into(),
@@ -383,15 +425,19 @@ impl HistoryCell for SessionHeaderHistoryCell {
         let width = usize::from(width);
         let mut title = vec!["  ".into()];
         title.extend(codex_title(self.version));
-        let mut lines = vec![
-            Line::default(),
+        let mut lines = vec![Line::default()];
+        if width >= 56 {
+            lines.extend(redpill_banner_lines());
+            lines.push(Line::default());
+        }
+        lines.extend([
             Line::from(title),
             Line::from(vec![
                 "     ".into(),
                 self.format_directory(Some(width.saturating_sub(/*rhs*/ 5)))
                     .dim(),
             ]),
-        ];
+        ]);
         if self.yolo_mode {
             lines.push(Line::from(vec![
                 "  permissions: ".dim(),
@@ -406,7 +452,7 @@ impl HistoryCell for SessionHeaderHistoryCell {
 
     fn raw_lines(&self) -> Vec<Line<'static>> {
         let mut lines = vec![
-            Line::from(format!("OpenAI Codex (v{})", self.version)),
+            Line::from(format!("redpill (v{})", self.version)),
             Line::from(format!(
                 "model: {}{}",
                 self.model,

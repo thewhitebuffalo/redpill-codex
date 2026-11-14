@@ -58,7 +58,7 @@ pub fn new_approval_decision_cell(
                     vec![
                         actor.subject().into(),
                         "approved".bold(),
-                        " codex to run ".into(),
+                        " redpill to run ".into(),
                         Span::from(snippet).dim(),
                         " this time".bold(),
                     ]
@@ -77,7 +77,7 @@ pub fn new_approval_decision_cell(
                 vec![
                     actor.subject().into(),
                     "approved".bold(),
-                    " codex network access to ".into(),
+                    " redpill network access to ".into(),
                     Span::from(target).dim(),
                     " this time".bold(),
                 ],
@@ -92,7 +92,7 @@ pub fn new_approval_decision_cell(
                 vec![
                     actor.subject().into(),
                     "approved".bold(),
-                    " codex to always run commands that start with ".into(),
+                    " redpill to always run commands that start with ".into(),
                     snippet,
                 ],
             )
@@ -103,7 +103,7 @@ pub fn new_approval_decision_cell(
                     vec![
                         actor.subject().into(),
                         "approved".bold(),
-                        " codex to run ".into(),
+                        " redpill to run ".into(),
                         Span::from(snippet).dim(),
                         " every time this session".bold(),
                     ]
@@ -122,7 +122,7 @@ pub fn new_approval_decision_cell(
                 vec![
                     actor.subject().into(),
                     "approved".bold(),
-                    " codex network access to ".into(),
+                    " redpill network access to ".into(),
                     Span::from(target).dim(),
                     " every time this session".bold(),
                 ],
@@ -141,7 +141,7 @@ pub fn new_approval_decision_cell(
                     vec![
                         actor.subject().into(),
                         "persisted".bold(),
-                        " Codex network access to ".into(),
+                        " redpill network access to ".into(),
                         Span::from(target).dim(),
                     ],
                 ),
@@ -150,7 +150,7 @@ pub fn new_approval_decision_cell(
                     vec![
                         actor.subject().into(),
                         "denied".bold(),
-                        " codex network access to ".into(),
+                        " redpill network access to ".into(),
                         Span::from(target).dim(),
                         " and saved that rule".into(),
                     ],
@@ -165,13 +165,13 @@ pub fn new_approval_decision_cell(
                         ApprovalDecisionActor::User => vec![
                             actor.subject().into(),
                             "did not approve".bold(),
-                            " codex to run ".into(),
+                            " redpill to run ".into(),
                             snippet,
                         ],
                         ApprovalDecisionActor::Guardian => vec![
                             "Request ".into(),
                             "denied".bold(),
-                            " for codex to run ".into(),
+                            " for redpill to run ".into(),
                             snippet,
                         ],
                     }
@@ -194,7 +194,7 @@ pub fn new_approval_decision_cell(
                 vec![
                     actor.subject().into(),
                     "did not approve".bold(),
-                    " codex network access to ".into(),
+                    " redpill network access to ".into(),
                     Span::from(target).dim(),
                 ],
             ),
@@ -283,7 +283,7 @@ pub fn new_guardian_denied_patch_request(files: Vec<String>) -> Box<dyn HistoryC
     let mut summary = vec![
         "Request ".into(),
         "denied".bold(),
-        " for codex to apply ".into(),
+        " for redpill to apply ".into(),
     ];
     if files.len() == 1 {
         summary.push("a patch touching ".into());

@@ -729,6 +729,12 @@ impl AppServerSession {
         app_event_tx: AppEventSender,
         status_updates: tokio::sync::broadcast::Sender<ThreadStatusChangedNotification>,
     ) -> std::io::Result<()> {
+        // redpill: keep task tools on the in-process dynamic-tool transport instead of
+        // a loopback HTTP MCP listener, so the only TCP listener is llama-server.
+        let _ = (&config, &app_event_tx, &status_updates);
+        if true {
+            return Ok(());
+        }
         if self.thread_params_mode == ThreadParamsMode::Cloud {
             return Ok(());
         }

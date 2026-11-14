@@ -335,7 +335,7 @@ impl App {
             Err(external_editor::EditorError::MissingEditor) => {
                 self.chat_widget
                     .add_to_history(history_cell::new_error_event(
-                    "Cannot open external editor: set $VISUAL or $EDITOR before starting Codex."
+                    "Cannot open external editor: set $VISUAL or $EDITOR before starting redpill."
                         .to_string(),
                 ));
                 self.reset_external_editor_state(tui);
@@ -613,17 +613,17 @@ impl App {
                     items: [
                         (
                             "Cancel task",
-                            "Stop the current task and stay in Codex",
+                            "Stop the current task and stay in redpill",
                             RunningTaskExitAction::CancelTask,
                         ),
                         (
                             "Run in background",
-                            "Exit Codex and leave the task running",
+                            "Exit redpill and leave the task running",
                             RunningTaskExitAction::RunInBackground,
                         ),
                         (
                             "Exit",
-                            "Stop the current task and exit Codex",
+                            "Stop the current task and exit redpill",
                             RunningTaskExitAction::Exit,
                         ),
                     ]

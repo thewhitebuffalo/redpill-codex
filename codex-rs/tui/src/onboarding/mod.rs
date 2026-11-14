@@ -18,4 +18,4 @@ pub(crate) use trust_directory::TrustCancelAction;
 mod welcome;
 
 pub(crate) const SETUP_CONNECTION_LOST: &str =
-    "Codex lost its connection during setup. Restart Codex to continue.";
+    "redpill lost its connection during setup. Restart redpill to continue.";

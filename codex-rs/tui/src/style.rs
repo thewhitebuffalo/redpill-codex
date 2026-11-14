@@ -26,7 +26,11 @@ pub(crate) const CHATGPT_BLUE_100: (u8, u8, u8) = (164, 205, 251);
 pub(crate) const CHATGPT_BLUE_200: (u8, u8, u8) = (99, 168, 248);
 
 /// Shared accent for picker selection backgrounds and transcript foreground emphasis.
-pub(crate) const UI_ACCENT: (u8, u8, u8) = CHATGPT_BLUE_200;
+/// redpill theme (mirrors ~/.local/share/redpill/theme.py).
+pub(crate) const REDPILL_CYAN: (u8, u8, u8) = (0x00, 0xf0, 0xff);
+pub(crate) const REDPILL_MAGENTA: (u8, u8, u8) = (0xff, 0x2b, 0xd6);
+pub(crate) const REDPILL_GREEN: (u8, u8, u8) = (0x39, 0xff, 0x14);
+pub(crate) const UI_ACCENT: (u8, u8, u8) = REDPILL_MAGENTA;
 
 /// The result marker inherits the row fill, including the reverse-video selection fallback.
 pub(crate) fn task_marker(unread: bool, row: Style) -> ratatui::text::Span<'static> {

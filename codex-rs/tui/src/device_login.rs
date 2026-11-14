@@ -192,14 +192,14 @@ pub(crate) async fn handle_event_during_device_login(
             color_eyre::eyre::eyre!(message).wrap_err(crate::onboarding::SETUP_CONNECTION_LOST),
         )),
         AppServerEvent::Lagged { .. } => Err(io::Error::other(
-            "Lost the gateway sign-in result. Restart Codex to check the connection.",
+            "Lost the gateway sign-in result. Restart redpill to check the connection.",
         )),
         AppServerEvent::ServerRequest(request) => {
             origin
                 .server_request_reply_handle(request.id().clone())
                 .reject(codex_app_server_protocol::JSONRPCErrorError {
                     code: -32000,
-                    message: "Codex cannot handle this request during gateway sign-in".into(),
+                    message: "redpill cannot handle this request during gateway sign-in".into(),
                     data: None,
                 })
                 .await?;

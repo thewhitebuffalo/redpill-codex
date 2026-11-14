@@ -253,7 +253,7 @@ mod tests {
                 "Disable terminal pets",
                 "BSOD",
                 "Chefito",
-                "Codex",
+                "redpill",
                 "Dewey",
                 "Fireball",
                 "Null Signal",

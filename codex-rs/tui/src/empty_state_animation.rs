@@ -122,8 +122,9 @@ impl EmptyStateAnimation {
         buffer: &mut Buffer,
         presentation: Presentation,
     ) -> Option<Duration> {
-        let now = Instant::now();
-        self.render_in_at(area, buffer, presentation, now)
+        // redpill: the upstream empty-state mark is OpenAI's logo; never draw it.
+        let _ = (area, buffer, presentation);
+        None
     }
 
     fn render_in_at(
@@ -198,6 +199,11 @@ impl EmptyStateAnimation {
         composer: Option<ComposerState>,
         motion: MotionMode,
     ) -> Option<Duration> {
+        // redpill: no upstream logo on the first screen either.
+        if true {
+            let _ = (screen, available, buffer, composer, motion);
+            return None;
+        }
         const STAGE_ROWS: u16 = 21;
         const MIN_STAGE_ROWS: u16 = 14;
         let width = screen.width.saturating_sub(/*rhs*/ 4).min(MAX_COLUMNS);

@@ -110,7 +110,7 @@ use codex_protocol::protocol::AskForApproval;
 use codex_protocol::user_input::UserInput;
 use codex_terminal_detection::TerminalName;
 
-/// Codex CLI
+/// redpill-agent: local-only coding agent (fork of the Apache-2.0 Codex CLI)
 ///
 /// If no subcommand is specified, options will be forwarded to the interactive CLI.
 #[derive(Debug, Parser)]
@@ -122,8 +122,8 @@ use codex_terminal_detection::TerminalName;
     // The executable is sometimes invoked via a platform‑specific name like
     // `codex-x86_64-unknown-linux-musl`, but the help output should always use
     // the generic `codex` command name that users run.
-    bin_name = "codex",
-    override_usage = "codex [OPTIONS] [PROMPT]\n       codex [OPTIONS] <COMMAND> [ARGS]"
+    bin_name = "redpill-agent",
+    override_usage = "redpill-agent [OPTIONS] [PROMPT]\n       redpill-agent [OPTIONS] <COMMAND> [ARGS]"
 )]
 struct MultitoolCli {
     #[clap(flatten)]
@@ -187,7 +187,7 @@ enum Subcommand {
     /// Generate shell completion scripts.
     Completion(CompletionCommand),
 
-    /// Update Codex to the latest version.
+    /// Disabled in redpill-agent (local source build).
     Update,
 
     /// Diagnose local Codex installation, config, auth, and runtime health.
@@ -891,6 +891,7 @@ fn resolve_windows_update_command_from_path(
         .ok_or_else(|| anyhow::anyhow!("could not find update command `{command}` on PATH"))
 }
 
+#[allow(dead_code)]
 fn run_update_command() -> anyhow::Result<()> {
     #[cfg(debug_assertions)]
     {
@@ -1772,7 +1773,8 @@ async fn dispatch_cli(
                 root_remote_auth_token_env.as_deref(),
                 "update",
             )?;
-            run_update_command()?;
+            // redpill-agent is built locally from source and never self-updates over the network.
+            anyhow::bail!("redpill-agent is a local source build; updates are disabled");
         }
         Some(Subcommand::Doctor(doctor_cli)) => {
             reject_remote_mode_for_subcommand(

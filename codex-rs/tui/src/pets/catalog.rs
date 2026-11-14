@@ -26,7 +26,7 @@ pub(super) const BUILTIN_PETS: &[BuiltinPet] = &[
     BuiltinPet {
         id: "codex",
         display_name: "Codex",
-        description: "The original Codex companion",
+        description: "The original redpill companion",
         spritesheet_file: "codex-spritesheet-v4.webp",
     },
     BuiltinPet {
