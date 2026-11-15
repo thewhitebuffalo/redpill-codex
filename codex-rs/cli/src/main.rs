@@ -110,7 +110,7 @@ use codex_protocol::protocol::AskForApproval;
 use codex_protocol::user_input::UserInput;
 use codex_terminal_detection::TerminalName;
 
-/// redpill-agent: local-only coding agent (fork of the Apache-2.0 Codex CLI)
+/// redpill: local-only coding agent (fork of the Apache-2.0 Codex CLI)
 ///
 /// If no subcommand is specified, options will be forwarded to the interactive CLI.
 #[derive(Debug, Parser)]
@@ -122,8 +122,8 @@ use codex_terminal_detection::TerminalName;
     // The executable is sometimes invoked via a platform‑specific name like
     // `codex-x86_64-unknown-linux-musl`, but the help output should always use
     // the generic `codex` command name that users run.
-    bin_name = "redpill-agent",
-    override_usage = "redpill-agent [OPTIONS] [PROMPT]\n       redpill-agent [OPTIONS] <COMMAND> [ARGS]"
+    bin_name = "redpill",
+    override_usage = "redpill [OPTIONS] [PROMPT]\n       redpill [OPTIONS] <COMMAND> [ARGS]"
 )]
 struct MultitoolCli {
     #[clap(flatten)]
@@ -1774,7 +1774,7 @@ async fn dispatch_cli(
                 "update",
             )?;
             // redpill-agent is built locally from source and never self-updates over the network.
-            anyhow::bail!("redpill-agent is a local source build; updates are disabled");
+            anyhow::bail!("redpill is a local source build; updates are disabled");
         }
         Some(Subcommand::Doctor(doctor_cli)) => {
             reject_remote_mode_for_subcommand(
