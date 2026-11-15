@@ -1,3 +1,9 @@
+# redpill
+
+A fork of [openai/codex](https://github.com/openai/codex), rebranded as redpill for use with local [llama.cpp](https://github.com/ggml-org/llama.cpp) models.
+
+---
+
 <p align="center"><strong>Codex CLI</strong> is a coding agent from OpenAI that runs locally on your computer.
 <p align="center">
   <img src="https://github.com/openai/codex/blob/main/.github/codex-cli-splash.png" alt="Codex CLI splash" width="80%" />
