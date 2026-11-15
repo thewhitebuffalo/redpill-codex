@@ -324,7 +324,10 @@ impl ChatComposer {
                 );
             }
             if let Some(key) = self.footer.toggle_shortcuts_key {
-                hints.add(Shortcuts, [shortcut(key, " for shortcuts")]);
+                hints.add(
+                    Shortcuts,
+                    [shortcut(key, " for shortcuts · /quit or Ctrl-C ×2 to exit")],
+                );
             }
         }
         let show_warning = self.show_warning_notice(options);

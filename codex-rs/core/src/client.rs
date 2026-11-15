@@ -1210,7 +1210,8 @@ impl ModelClient {
             self.state.thread_id.to_string().as_bytes(),
         );
         let mut prefix = Vec::new();
-        let tools = if model_info.use_responses_lite {
+        // redpill-agent: `additional_tools` input items are OpenAI-only; llama.cpp rejects them.
+        let tools = if model_info.use_responses_lite && is_openai {
             if !prompt.tools.is_empty() {
                 let tools = create_tools_json_for_responses_lite(&prompt.tools)?;
                 prefix.push(ResponseItem::AdditionalTools {

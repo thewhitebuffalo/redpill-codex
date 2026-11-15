@@ -112,6 +112,10 @@ impl CodeModeService {
 
     pub(crate) fn take_unavailable_warning(&self, tool_mode: ToolMode) -> Option<String> {
         let error = self.availability.as_ref().err()?;
+        // redpill-agent: direct tools are the normal mode for the local model.
+        if matches!(tool_mode, ToolMode::Direct) {
+            return None;
+        }
         let behavior = match tool_mode {
             ToolMode::Direct => "Falling back to direct tools",
             ToolMode::CodeMode | ToolMode::CodeModeOnly => "Code mode will fail closed",

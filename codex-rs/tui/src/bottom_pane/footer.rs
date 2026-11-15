@@ -316,6 +316,7 @@ fn left_side_line(
                 line.extend(key.spans());
                 line.push_span(" for shortcuts".set_style(secondary_text_style()));
             }
+            line.push_span(" · /quit or Ctrl-C ×2 to exit".set_style(secondary_text_style()));
         }
         SummaryHintKind::QueueMessage => {
             if let Some(key) = key_hints.queue {
