@@ -288,8 +288,25 @@ impl ToolRouter {
                 ref mut encrypted_function_args,
                 ..
             } => {
-                let tool_name =
+                let mut tool_name =
                     ToolName::new(namespace.clone(), name.clone()).with_default_namespace();
+                if namespace.is_none() && self.registry.registered_tool(&tool_name).is_none() {
+                    // redpill: map a flat local-provider call back to its namespaced tool.
+                    if let Some(found) = self.model_visible_specs.iter().find_map(|spec| match spec {
+                        ToolSpec::Namespace(ns) => ns.tools.iter().find_map(|tool| match tool {
+                            ResponsesApiNamespaceTool::Function(tool)
+                                if crate::local_tool_names::flat_name(&ns.name, &tool.name)
+                                    == *name =>
+                            {
+                                Some(ToolName::new(Some(ns.name.clone()), tool.name.clone()))
+                            }
+                            _ => None,
+                        }),
+                        _ => None,
+                    }) {
+                        tool_name = found;
+                    }
+                }
                 let retain_native_call = self
                     .registry
                     .registered_tool(&tool_name)

@@ -1225,7 +1225,15 @@ impl ModelClient {
             }
             None
         } else {
-            Some(create_tools_raw_json_for_responses_api(&prompt.tools)?.into())
+            let raw = create_tools_raw_json_for_responses_api(&prompt.tools)?;
+            if is_openai {
+                Some(raw.into())
+            } else {
+                let flat = crate::local_tool_names::flatten_tools(serde_json::from_str(raw.get())?);
+                let raw: Arc<serde_json::value::RawValue> =
+                    Arc::from(serde_json::value::to_raw_value(&flat)?);
+                Some(raw.into())
+            }
         };
         if !prompt.base_instructions.text.is_empty() {
             let mut instructions = ContextualUserFragment::into(BaseInstructionsFragment(
@@ -1257,10 +1265,15 @@ impl ModelClient {
                 }
                 if let ResponseItem::FunctionCall {
                     encrypted_function_args,
+                    name,
+                    namespace,
                     ..
                 } = item
                 {
                     *encrypted_function_args = None;
+                    if let Some(ns) = namespace.take() {
+                        *name = crate::local_tool_names::flat_name(&ns, name);
+                    }
                 }
             }
         }
